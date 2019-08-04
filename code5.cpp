@@ -1,167 +1,318 @@
-#include<algorithm>
-#include<vector>
-#include<cstring>
+#include <iostream>
+#include <vector>
+
 using namespace std;
 
-std::vector<char> v;
+string remainder(string, string);
+string subtract(string, string);
+string divide(string, string);
+string multiply(string, string);
+string power(string, string);
 
-int main(int argc, char const *argv[])
+bool prime(string);
+
+int main()
 {
-	vector<char> s1;
-	
-	cin>>s1;
-
-	vector<char> a;
-	a='2';
-
-	num=subtract(power(a,s1),'2');
-
-	if(div(s1,num)=='0')
+	int p;
+	cin >> p;
+	while(p > 0)
 	{
-		cout<<"the number is prime";
-	}			
-
-	else
-		cout<<"the number is not prime";
+		string s1;
+		int flag_2 = 0;
+		//cout << "Enter Positive Number 1: ";
+		cin >> s1;
+		int i;
+		for(i = 0; i < s1.size(); i++)
+		{
+			if(s1[i] != '0')
+			{
+				flag_2 = 1;
+				break;
+			}
+		}
+		if(flag_2)
+			s1 = s1.substr(i);
+		else
+			s1 = "0";
+		if(prime(s1))
+			cout << "Prime\n";
+		else
+			cout << "Not a Prime\n";
+		p--;
+	}
 	return 0;
 }
 
-vector<char> power(std::vector<char> s1;std::vector<char> s2;)
+bool prime(string s1)
 {
-	if(s2=='0')
-		return '1';
-	else if (div(s2,'2')=='0')
-		return multiply(s1,multiply(power(s1,div(s2,'2')),power(s1,div(s2,'2'))))
-	else
-		return multiply(power(s1,div(s2,'2')),power(s1,div(s2,'2')))
+	if(remainder(subtract(power("2", s1), "2"), s1).compare("0"))
+	{
+		return false;
+	}
+	return true;
 }
 
-vector<char> subtract(vector<char> s1, std::vector<char> s2;)
+string remainder(string s1, string s2)
 {
-	
-	
-
-	int sign =s1.compare(s2);
-	if(sign<0) swap(s1,s2);
-
-	int n1=s1.length(),n2=s2.length();
-	
-
-	reverse(s1.begin(),s1.end());
-	reverse(s2.begin(),s2.end());
-
-	int carry=0;
-	int p;
-	std::vector<char> s3;
-	
-
-	
-	for(int i=0;i<n2;i++)
+	int l_a = s1.size(), l_b = s2.size();
+	vector<int> quotient(l_a + 1, 0);
+	if(l_a < l_b)
 	{
-		
-		if(s1[i]+carry>=s2[i])
+		return s1;
+	}
+	else if(l_a == l_b && s1.compare(s2) < 0)
+	{
+		return s1;
+	}
+	else if(l_a == l_b && s1.compare(s2) == 0)
+	{
+		return "0";
+	}
+	else
+	{
+		while(1)
 		{
-			p=s1[i]+carry-s2[i]+'0';
-			carry=0;;
+			if(s1.size() == 0)
+			{
+				break;
+			}
+			if(s1.size() == s2.size())
+			{
+				if(s1.compare(s2) < 0)
+					break;
+			}
+			if(s1.size() < s2.size())
+			{
+				break;
+			}
+			string temp = s2;
+			if(s1.compare(s2) >= 0)
+			{
+				temp.append(s1.size() - s2.size(), '0');
+				quotient[s1.size() - s2.size()]++;
+				s1 = subtract(s1, temp);
+			}
+			else
+			{
+				temp.append(s1.size() - s2.size() - 1, '0');
+				quotient[s1.size() - s2.size() - 1]++;
+				s1 = subtract(s1, temp);
+			}
+			//cout << s1 << '\n';
 			
 		}
-		
-		else
+		for(int i = 0; i < l_a + 1; i++)
 		{
-			p=carry+10+s1[i]-s2[i]+'0';
-
-			carry=-1;
-
+			if(quotient[i] > 9)
+			{
+				quotient[i+1] += quotient[i] / 10;
+				quotient[i] = quotient[i] % 10;
+			}
 		}
-		
-		s3.push_back(p);
-
-	}
-
+		if(s1.empty())
+			return "0";
+		return s1;
+	}	
 	
-
-	for(int i=n2;i<n1;i++)
-	{
-		if(s1[i]+carry>='0')
-		{
-			p=s1[i]+carry;
-			carry=0;
-		}
-		
-		else
-		{
-			p=carry+10+s1[i];
-			carry=-1;
-		}
-		
-		s3.push_back(p);
-	}
-
-	if(sign<0) s3.push_back('-');
-
-	reverse(s3.begin(),s3.end());
-	
-	
-	
-
-	
-
-	return s3;
 }
 
-vector<char> multiply(std::vector<char> s1;std::vector<char> s2;)
+string subtract(string a, string b)
 {
-	
-
-
-	int result_size=s1.length()+s2.length();
-
-	vector<char> result(result_size,'0'); // storage of final result
-
-	reverse(s1.begin(),s1.end());
-	reverse(s2.begin(),s2.end());
-
-
-
-	int i_n1=0; // the character of 1st string with whom multiplication is being done in the current iteration
-	
-	
-
-	int carry=0;
-
-	for(int i=0;i<s1.length();i++)
+	vector<int> c(max(a.size(), b.size()));
+	int l_a = a.size(), l_b = b.size();
+	int i = a.size() - 1, j = b.size() - 1, k = 0;
+	int carry = 0, digit;
+	int flag = 0;
+	while(i >= 0 && j >= 0)
 	{
-		int n1=s1[i]-'0'; 
-
-		int i_n2=0;  // the character of 2nd string with whom multiplication is being done in the current iteration
-
-		for(int j=0;j<s2.length();j++)
-		{	
-			int n2=s2[j]-'0';
-
-			int p=n1*n2+result.at(i_n2+i_n1)-'0'+carry;// here result[n1+n2] term accounts for the shifting required in normal multiplication
-
-
-			char t=p%10+'0';
-			result[i_n1+i_n2]=t;
-		
-			carry=p/10;
-
-			i_n2++;
-
+		digit = a[i] - b[j] - carry;
+		if(digit < 0)
+		{
+			digit += 10;
+			carry = 1;
 		}
-
-		i_n1++;
-
-		
+		else
+		{
+			carry = 0;
+		}
+		c[k++] = digit;
+		i--;
+		j--;
 	}
+	while(i >= 0)
+	{
+		digit = a[i] - '0' - carry;
+		if(digit < 0)
+		{
+			digit += 10;
+			carry = 1;
+		}
+		else
+		{
+			carry = 0;
+		}
+		c[k++] = digit;
+		i--;
+	}
+	for(i = 0; i < k; i++)
+	{
+		if(c[i])
+			flag = 1;
+	}
+	j = 0;
+	string d = "";
+	if(flag)
+	{
+		i = k-1;
+		while(!c[i])
+			i--;
+		for(; i >= 0; i--)
+		{
+			d += (c[i] + '0');
+		}
+	}
+	return d;
 
-		result[result_size-1]=carry+'0';
+}
 
+string multiply(string a, string b)
+{
+	int flag = 0;
+	int l_a = a.size(), l_b = b.size();
+	int p_a = 0, p_b = 0;
+	int carry = 0, product;
+	vector<int> result(l_a + l_b, 0);
+	for(int i = l_b - 1; i >= 0; i--)
+	{
+		for(int j = l_a - 1; j >= 0; j--)
+		{
+			product = (a[j] - '0') * (b[i] - '0') + result[p_a + p_b];
+			result[p_a + p_b] = product % 10;
+			carry = product / 10;
+			//cout << product << ' ' << result[p_a + p_b] << '\n';
+			p_a++;
+			result[p_a + p_b] += carry;
+			//cout << carry << ' ' << result[p_a + p_b] << '\n';
+		}
+		p_b++;
+		p_a = 0;
+	}
+	for(int i = 0; i < l_a + l_b; i++)
+	{
+		if(result[i])
+			flag = 1;
+	}
+	if(flag)
+	{
+		int i = l_a + l_b - 1;
+		string s = "";
+		while(!result[i])
+		{
+			i--;	
+		}
+		for(; i >= 0; i--)
+			s += (result[i] + '0');
+		return s;
+	}
+	else
+	{
+		return "0";
+	}
+}
 
-
-	reverse(result.begin(),result.end());
-
+string divide(string a, string b)
+{
+	int l_a = a.size(), l_b = b.size();
+	vector<int> quotient(l_a + 1, 0);
+	if(l_a < l_b)
+	{
+		return "0";
+	}
+	else if(l_a == l_b && a.compare(b) < 0)
+	{
+		return "0";
+	}
+	else if(l_a == l_b && a.compare(b) == 0)
+	{
+		return "1";
+	}
+	else
+	{
+		while(1)
+		{
+			if(a.size() == 0)
+			{
+				break;
+			}
+			if(a.size() == b.size())
+			{
+				if(a.compare(b) < 0)
+					break;
+			}
+			if(a.size() < b.size())
+			{
+				break;
+			}
+			string temp = b;
+			if(a.compare(b) >= 0)
+			{
+				temp.append(a.size() - b.size(), '0');
+				quotient[a.size() - b.size()]++;
+				a = subtract(a, temp);
+			}
+			else
+			{
+				temp.append(a.size() - b.size() - 1, '0');
+				quotient[a.size() - b.size() - 1]++;
+				a = subtract(a, temp);
+			}
+			//cout << a << '\n';
+			
+		}
+		for(int i = 0; i < l_a + 1; i++)
+		{
+			if(quotient[i] > 9)
+			{
+				quotient[i+1] += quotient[i] / 10;
+				quotient[i] = quotient[i] % 10;
+			}
+		}
+		if(a.size())
+		{
+			int i = l_a - 1;
+			string s = "";
+			while(!quotient[i])
+				i--;
+			for(;i >= 0; i--)
+				s += (quotient[i] + '0');
+			return s;
+		}
+		else
+		{
+			int i = l_a - 1;
+			string s = "";
+			while(!quotient[i])
+				i--;
+			for(;i >= 0; i--)
+				s += (quotient[i] + '0');
+			return s;
+		}
+	}	
 	
-	return result;
+}
+
+string power(string a, string b)
+{
+	string prod = "1";
+	string prodSeq = a;
+	while(b.compare("0"))
+	{
+		if(!(remainder(b, a).compare("1")))
+		{
+			prod = multiply(prod, prodSeq);
+		}
+		b = divide(b, a);
+		prodSeq = multiply(prodSeq, prodSeq);
+	}
+	return prod;
 }
