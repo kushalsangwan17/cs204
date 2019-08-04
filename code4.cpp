@@ -1,352 +1,192 @@
-#include <iostream>
+##include <iostream>
+#include <vector>
 
-#include <string>
-#include<algorithm>
-#include<vector>
-#include<cstring>
 using namespace std;
 
-int zero_testing(string s)
+void divide(string, string);
+string subtract(string, string);
+int main()
 {
-	for(int i=0;i<s.length();i++)
+	int p;  // no. of divisons you wannt to do
+	cin >> p;
+	while(p > 0)
 	{
-		if(s[i]!='0') return 1;
+		string s1, s2;
+		int flag_2 = 0;
+		//cout << "Enter Positive Number 1: ";
+		cin >> s1;
+		//cout << "Enter Positive Number 2: ";
+		cin >> s2;
+		int i;
+		for(i = 0; i < s1.size(); i++)
+		{
+			if(s1[i] != '0')
+			{
+				flag_2 = 1;
+				break;
+			}
+		}
+		if(flag_2)
+			s1 = s1.substr(i);
+		else
+			s1 = "0";
+		flag_2 = 0;
+		
+		for(i = 0; i < b.size(); i++)
+		{
+			if(s2[i] != '0')
+			{
+				flag_2 = 1;
+				break;
+			}
+		}
+		if(flag_2)
+			s2 = s2.substr(i);
+		else
+			s2 = "0";
+		divide(s1, s2);
+		p--;
 	}
-
 	return 0;
 }
 
-int zero_testing_v(vector<char> s)
+void divide(string s1, string s2)
 {
-	for(auto i=s.begin();i!=s.end();i++)
+	int l_a = s1.size(), l_b = s2.size();
+	vector<int> quotient(l_a + 1, 0);
+	if(l_a < l_b)
 	{
-		if(*i!='0') return 1;
+		cout << 0 << '\n' << s1 << '\n';
 	}
-
-	return 0;
-}
-
-std::vector<char> make_vector(string , int);
-std::vector<char> multiply(string s1,string s2);
-std::vector<char> subtract(std::vector<char>  s1,std::vector<char>  s2);
-vector<char> remove_zeros(vector<char> s);
-string remove_front_zeros(string );
-
-int main(int argc, char const *argv[])
-{
-	string s1,s2;
-	cin>>s1>>s2;
-
-	s1=remove_front_zeros(s1);// for strings
-	s2=remove_front_zeros(s2);
-
-	std::vector<char> s3; // quotient
-	std::vector<char> s4;//remainder
-
-	if(s1.length()==s2.length())
+	else if(l_a == l_b && s1.compare(s2) < 0)
 	{
-		if(s2.compare(s1)>0) cout<<"answer is quotient is 0 remainder is"<<s1;
+		cout << 0 << '\n' << s1 << '\n';
 	}
-
-	if(s1.length()<s2.length())
+	else if(l_a == l_b && s1.compare(s2) == 0)
 	{
-		cout<<"answer is quotient is 0 remainder is"<<s1;
+		cout << 1 << '\n' << 0 << '\n';
 	}
-
 	else
 	{
-		if(s1.compare(s2)>0)
+		while(1)
 		{
-		
-			int k=s2.length(); // for tracking the number of digits which is being brought down to continue division
-			std::vector<char> temp=make_vector(s1,k);
-
-			int i;
-			string j;
-		
-		
-			for(i=0;;i=i+1)
+			if(s1.size() == 0)
 			{
+				break;
+			}
+			if(s1.size() == s2.size())
+			{
+				if(s1.compare(s2) < 0)
+					break;
+			}
+			if(s1.size() < s2.size())
+			{
+				break;
+			}
+			string temp = s2;
+			if(s1.compare(ss2) >= 0)
+			{
+				temp.append(s1.size() - s2.size(), '0');
+				quotient[s1.size() - s2.size()]++;
+				s1 = subtract(s1, temp);
+			}
+			else
+			{
+				temp.append(s1.size() - s2.size() - 1, '0');
+				quotient[s1.size() - s2.size() - 1]++;
+				s1 = subtract(s1, temp);
+			}
+			//cout << s1 << '\n';
 			
-				j=to_string(i);
-				std::vector<char> p=subtract(temp,multiply(s2,j));
-				if(p[0]=='-') break;
-			}
-
-		
-
-			if(i-1==0)
-			{
-				temp=make_vector(s1,k++);
-
-		 	
-		
-				for(i=0;i<11;i=i+1)
-				{	
-					j=to_string(i);
-					std::vector<char> p=subtract(temp,multiply(s2,j));
-					if(p[0]=='-') break;
-				}
-
-			}
-
-			j=to_string(i-1);
-			s3.push_back(j[0]);
-			s4=subtract(temp,multiply(s2,j));
-
-		
-
-			for(;k<=s1.length()-s2.length();k++)
-			{
-				s4.push_back(s1[k]);
-				temp=s4;
-				for(i=0;i<11;i++)
-				{	
-					j=to_string(i);
-					std::vector<char> p=subtract(temp,multiply(s2,j));
-					if(p[0]=='-') break;	
-				}
-			
-				j=to_string(i-1);
-				s3.push_back(j[0]);
-				s4=subtract(temp,multiply(s2,j));
-			}
-
-			s3=remove_zeros(s3);
-			s4=remove_zeros(s4);
-
-			for(auto ir=s3.cbegin();ir!=s3.cend();ir++)
-			{
-				cout<<*ir;
-			}
-
-			for(auto ir=s4.cbegin();ir!=s4.cend();ir++)
-			{
-				cout<<*ir;
-			}
-
 		}
-
-		else 
-
-		{	
-			if (s1.compare(s2)==0)
-			{
-				cout<<"the answer is 1";
-				/* code */
-			}
-		}
-	}
-
-	return 0;	
-}
-
-
-std::vector<char> multiply(string s1,string s2)
-{	
-
-
-	int value1=zero_testing(s1);
-	int value2=zero_testing(s2);
-	if(value1==0||value2==0)
-	{
-		
-		std::vector<char> v(1,'0');
-		return v;
-	}
-
-	s1=remove_front_zeros(s1);
-	s2=remove_front_zeros(s2);
-
-	int result_size=s1.length()+s2.length();
-
-	vector<char> result(result_size,'0'); // storage of final result
-
-	reverse(s1.begin(),s1.end());
-	reverse(s2.begin(),s2.end());
-
-
-
-	int i_n1=0; // the character of 1st string with whom multiplication is being done in the current iteration
-	
-	
-
-	int carry=0;
-
-	for(int i=0;i<s1.length();i++)
-	{
-		int n1=s1[i]-'0'; 
-
-		int i_n2=0;  // the character of 2nd string with whom multiplication is being done in the current iteration
-
-		for(int j=0;j<s2.length();j++)
-		{	
-			int n2=s2[j]-'0';
-
-			int p=n1*n2+result.at(i_n2+i_n1)-'0'+carry;// here result[n1+n2] term accounts for the shifting required in normal multiplication
-
-
-			char t=p%10+'0';
-			result[i_n1+i_n2]=t;
-		
-			carry=p/10;
-
-			i_n2++;
-
-		}
-
-		i_n1++;
-
-		
-	}
-
-		result[result_size-1]=carry+'0';
-
-
-
-	reverse(result.begin(),result.end());
-
-	int value3=zero_testing_v(result);
-	if(value3!=0)result=remove_zeros(result);
-
-	
-	return result;
-}
-
-
-std::vector<char> subtract(std::vector<char>  k1,std::vector<char>  k2)
-{
-	string s1(k1.begin(),k1.end());
-	string s2(k2.begin(),k2.end());
-	
-	int value1=zero_testing(s1);
-	int value2=zero_testing(s2);
-
-	int sign;
-
-	if(value1!=0)s1=remove_front_zeros(s1);
-	if(value2!=0)s2=remove_front_zeros(s2);
-
-	if(s1.length()<s2.length())
-	{
-		swap(s1,s2);
-		sign=-1;
-	}
-	if(s1.length()==s2.length())
-	{
-		sign =s1.compare(s2);
-		if(sign<0) swap(s1,s2);
-	}
-
-	int n1=s1.length(),n2=s2.length();
-	
-
-	reverse(s1.begin(),s1.end());
-	reverse(s2.begin(),s2.end());
-
-	int carry=0;
-	int p;
-	std::vector<char> s3;
-	
-
-	
-	for(int i=0;i<n2;i++)
-	{
-		
-		if(s1[i]+carry>=s2[i])
+		for(int i = 0; i < l_a + 1; i++)
 		{
-			p=s1[i]+carry-s2[i]+'0';
-			carry=0;;
-			
+			if(quotient[i] > 9)
+			{
+				quotient[i+1] += quotient[i] / 10;
+				quotient[i] = quotient[i] % 10;
+			}
 		}
-		
+			
+		if(s1.size())
+		{
+			int i = l_a - 1;
+			while(!quotient[i])
+				i--;
+			for(;i >= 0; i--)
+				cout << quotient[i];
+			cout << '\n';
+			cout << a << '\n';
+		}
 		else
 		{
-			p=carry+10+s1[i]-s2[i]+'0';
-
-			carry=-1;
-
+			int i = l_a - 1;
+			while(!quotient[i])
+				i--;
+			for(;i >= 0; i--)
+				cout << quotient[i];
+			cout << '\n';
+			cout << 0 << '\n';
 		}
-		
-		s3.push_back(p);
-
-	}
-
+	}	
 	
+}
 
-	for(int i=n2;i<n1;i++)
+string subtract(string a, string b)
+{
+	vector<int> c(max(a.size(), b.size()));
+	int l_a = a.size(), l_b = b.size();
+	int i = a.size() - 1, j = b.size() - 1, k = 0;
+	int carry = 0, digit;
+	int flag = 0;
+	while(i >= 0 && j >= 0)
 	{
-		if(s1[i]+carry>='0')
+		digit = a[i] - b[j] - carry;
+		if(digit < 0)
 		{
-			p=s1[i]+carry;
-			carry=0;
+			digit += 10;
+			carry = 1;
 		}
-		
 		else
 		{
-			p=carry+10+s1[i];
-			carry=-1;
+			carry = 0;
 		}
-		
-		s3.push_back(p);
+		c[k++] = digit;
+		i--;
+		j--;
 	}
-
-	if(sign<0) s3.push_back('-');
-	
-	reverse(s3.begin(),s3.end());
-	int value3=zero_testing_v(s3);
-
-	if(value3!=0) s3=remove_zeros(s3);
-	
-	
-
-	return s3;
-}
-
-
-string remove_front_zeros(string s)
-{
-	int i;
-	string result;
-	
-	for(i=0;i<s.length();i++)
+	while(i >= 0)
 	{
-		if(s[i]!='0') break;
+		digit = a[i] - '0' - carry;
+		if(digit < 0)
+		{
+			digit += 10;
+			carry = 1;
+		}
+		else
+		{
+			carry = 0;
+		}
+		c[k++] = digit;
+		i--;
 	}
-	
-	for(;i<s.length();i++)
+	for(i = 0; i < k; i++)
 	{
-		result.push_back(s[i]);
+		if(c[i])
+			flag = 1;
 	}
-
-	return result;
-}
-
-vector<char> remove_zeros(vector<char> s)
-{
-	auto i=s.begin();
-	vector<char> result;
-	
-	for(;i!=s.end();i++)
+	j = 0;
+	string t = "";
+	if(flag)
 	{
-		if(*i!='0') break;
+		i = k-1;
+		while(!c[i])
+			i--;
+		for(; i >= 0; i--)
+		{
+			t += (c[i] + '0');
+		}
 	}
-	
-	for(;i!=s.end();i++)
-	{
-		result.push_back(*i);
-	}
+	return t;
 
-	return result;
-}
-
-std::vector<char> make_vector(string s , int i)
-{
-	std::vector<char> v;
-	for(int j=0;j<i;j++)
-	{
-		v.push_back(s[i]);
-	}
-
-	return v;
 }
