@@ -85,6 +85,11 @@ int main(int argc, char const *argv[])
 		sign =s1.compare(s2);
 		if(sign<0) swap(s1,s2);
 	}
+	
+	if(s1.length()>s2.length())
+	{
+		sign=1;
+	}
 
 	int n1=s1.length(),n2=s2.length();
 	
