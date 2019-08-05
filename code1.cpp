@@ -65,7 +65,10 @@ vector<char> remove_zeros(vector<char> s)
 
 int main(int argc, char const *argv[])
 {
-	string s1,s2;
+int number;
+	cin>>number;//tests
+while(number>0)	
+{	string s1,s2;
 	cin>>s1>>s2;
 	
 	int value1=zero_testing(s1);
@@ -131,6 +134,7 @@ int main(int argc, char const *argv[])
 	{
 		cout<<*ir;
 	}
-
+number--;
+}
 	return 0;
 }
