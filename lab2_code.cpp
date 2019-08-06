@@ -84,7 +84,7 @@ void del(int x, int y)
 {
 	if(head==NULL)
 	{
-		cout<<"empty linked list";
+		cout<<"-1";
 	}
 
 	else if(head->ptr==NULL)
@@ -93,7 +93,7 @@ void del(int x, int y)
 		{
 			del_first();
 		}
-		else cout<<"empty linked list";
+		else cout<<"-1";
 	}
 
 	else
@@ -117,7 +117,7 @@ void del(int x, int y)
 		}
 
 		if(temp->ptr==NULL)
-			cout<<"node doesnt exist";
+			cout<<"-1";
 		
 		else
 		{
