@@ -92,6 +92,7 @@ void del(int x, int y)
 		if(head->x==x&&head->y==y)
 		{
 			del_first();
+			cout<<"0";
 		}
 		else cout<<"-1";
 	}
@@ -105,6 +106,7 @@ void del(int x, int y)
 		if(temp->x==x&&temp->y==y)
 		{
 			del_first();
+			cout<<"0";
 			return;
 		}
 		
@@ -124,6 +126,7 @@ void del(int x, int y)
 			temp1=temp->ptr->ptr;
 			free(temp->ptr);
 			temp->ptr=temp1;
+			cout<<"0";
 		}
 	}
 }
