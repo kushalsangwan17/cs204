@@ -167,10 +167,11 @@ void search(int x, int y)
 
 		while(temp!=NULL)
 		{
-			if(temp->x==x&&temp->y==y) cout<<"("<<temp->x<<","<<temp->y<<")"<<",";
+			if(temp->x==x&&temp->y==y){ cout<<"true"; break; }
 			temp=temp->ptr;
 
 		}
+                if(temp==NULL) cout<<"false";
 	}
 }
 
