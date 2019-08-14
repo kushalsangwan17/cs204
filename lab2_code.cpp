@@ -155,7 +155,7 @@ void search(int d)
 
 		}
 		
-		if(n===0) cout<<"-1";
+		if(n==0) cout<<"-1";
 	}
 }
 
