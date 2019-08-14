@@ -67,7 +67,7 @@ void del_first()
 {
 	if(head==NULL)
 	{
-		cout<<"empty linked list";
+		cout<<"-1";
 	}
 
 	else
@@ -135,20 +135,27 @@ void search(int d)
 {
 	if(head==NULL)
 	{
-		cout<<"empty linked list";
+		cout<<"-1";
 	}
 
 	else
 	{
 		node* temp=new node;
 		temp=head;
+		int n=0;
 
 		while(temp!=NULL)
 		{
-			if(d*d>=temp->x*temp->x+temp->y*temp->y) cout<<"("<<temp->x<<","<<temp->y<<")"<<",";
+			if(d*d>=temp->x*temp->x+temp->y*temp->y) 
+			{
+				cout<<"("<<temp->x<<","<<temp->y<<")"<<",";
+				n++;
+			}
 			temp=temp->ptr;
 
 		}
+		
+		if(n===0) cout<<"-1";
 	}
 }
 
@@ -157,7 +164,7 @@ void search(int x, int y)
 {
 	if(head==NULL)
 	{
-		cout<<"empty linked list";
+		cout<<"false";
 	}
 
 	else
