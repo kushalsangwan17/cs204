@@ -148,7 +148,7 @@ void search(int d)
 		{
 			if(d*d>=temp->x*temp->x+temp->y*temp->y) 
 			{
-				cout<<"("<<temp->x<<","<<temp->y<<")"<<",";
+				
 				n++;
 			}
 			temp=temp->ptr;
@@ -156,6 +156,7 @@ void search(int d)
 		}
 		
 		if(n==0) cout<<"-1";
+                else cout<<n;
 	}
 }
 
