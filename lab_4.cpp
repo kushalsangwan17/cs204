@@ -1,4 +1,5 @@
 
+
 #include<iostream>
 using namespace std;
 
@@ -9,6 +10,13 @@ struct node
 	struct node* right_child;
 	struct node* parent;
 }
+
+class tree
+{
+	public:
+	node * root;
+}
+
 
 int evaulate(node* p)
 {
@@ -106,20 +114,23 @@ tree buildexpressiontree(string s)
 tree expressiontree1(string s)
 {
 	tree t;
-	node *p=tree.root();
+	node *p=new node;
+	
 	p->left_child=NULL;
 	p->right_child=NULL;
 	p->data=s;
+	tree.root=p;
 	return t;
 } 
 
 tree expressiontree1(tree t1,string s,tree t2)
 {
 	tree t;
-	node *p=tree.root();
+	node *p=new node;
 	p->left_child=t1.root();
 	p->right_child=t2.root();
 	p->data=s;
+	t.root=p;
 	return t;
 } 
 
@@ -144,5 +155,4 @@ int main()
 		num--;
 	}
 }
-
 
