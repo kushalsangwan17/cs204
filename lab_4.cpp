@@ -1,5 +1,3 @@
-
-
 #include <bits/stdc++.h>
 using namespace std;
 #define ll long long
@@ -23,98 +21,25 @@ using namespace std;
 #define fore(i,a,n) for(int i=a;i<=n;i++)
 ll mod=1e9+7;
 //------------------------------------------------------------
-int prec(char c) 
-{ 
-    if(c == '^') 
-    return 3; 
-    else if(c == '*' || c == '/') 
-    return 2; 
-    else if(c == '+' || c == '-') 
-    return 1; 
-    else
-    return -1; 
-} 
+
+
 struct node{
 	int x;
 	char opr;
 	bool b;
 };
-struct et{
-	node val;
-	et * left;
-	et * right;
+struct etree{
+	node data;
+	etree * left;
+	etree * right;
 };
 
-et * make_tree(vector<node>v){
-	stack<et *> s;
-	et *t, *t1, *t2;
-	forl(i,0,v.si){
-		if(v[i].b){
-			t=new et;
-			t->val=v[i];
-			t1=s.top();
-			s.pop();
-			t2=s.top();
-			s.pop();
-			t->right=t1;
-			t->left=t2;
-			s.push(t);
-		}
-		else{
-			t=new et;
-			t->val=v[i];
-			t->left=NULL;
-			t->right=NULL;
-			s.push(t);
-		}
-	}
-	return s.top();
-}
 stack<node>st;
-vector<node> intopost(vector<node>v){
-	vector<node> ans;
-	forl(i,0,v.si){
-		if(v[i].b){
-			char c=v[i].opr;
-			if(c=='('){
-				st.push(v[i]);
-			}
-			else if(c==')'){
-				while(st.top().opr!='('){
-					ans.pb(st.top());
-					st.pop();
-				}
-				st.pop();
-			}
-			else{
-				while(st.top().opr!='('&&prec(c)<=prec(st.top().opr)){
-					if(c=='^'&&st.top().opr=='^') break;
-					ans.pb(st.top());
-					st.pop();
-				}
-				//if(st.top().opr=='(') st.pop();
-				st.push(v[i]);
-			}
-		}
-		else{
-			ans.pb(v[i]);
-		}
-	}
-	
-}
-int eval(et * root){
-	if(root==NULL) return 0;
-	if(root->left==NULL&&root->right==NULL){
-		return root->val.x;
-	}
-	int l=eval(root->left);
-	int r=eval(root->right);
-	if(root->val.opr=='+') return l+r;
-	else if(root->val.opr=='-') return l-r;
-	else if(root->val.opr=='*') return l*r;
-	else if(root->val.opr=='/') return l/r;
-	else return pow(l,r);
-}
+int priority(char p) ;
+etree * make_tree(vector<node>v);
+vector<node> intopost(vector<node>v);
+int eval(etree * root);
+
 int main(){
 	fastio;
 	int t;
@@ -138,6 +63,12 @@ int main(){
 				else{
 					if(!curr.si&&s[i]=='-'){
 						curr+=s[i];
+					}
+					else if(curr.si==1&&curr[0]=='-'){
+						curr+='1';
+						//i-=2;
+						s[i-1]='*';
+						i-=2;
 					}
 					else {
 						if(curr.si){
@@ -168,10 +99,94 @@ int main(){
 			//	if(post[i].b) cout<<post[i].opr;
 			//	else cout<<post[i].x;
 			//}
-			et * root=make_tree(post);
-			//cout<<root->right->left->val.x;
+			etree * root=make_tree(post);
+			//cout<<root->right->left->data.x;
 			cout<<eval(root)<<endl;
 		}
 	}
 	return 0;
 }
+
+etree * make_tree(vector<node>v){
+	stack<etree *> s;
+	etree *t, *t1, *t2;
+	forl(i,0,v.si){
+		if(v[i].b){
+			t=new etree;
+			t->data=v[i];
+			t1=s.top();
+			s.pop();
+			t2=s.top();
+			s.pop();
+			t->right=t1;
+			t->left=t2;
+			s.push(t);
+		}
+		else{
+			t=new etree;
+			t->data=v[i];
+			t->left=NULL;
+			t->right=NULL;
+			s.push(t);
+		}
+	}
+	return s.top();
+}
+
+vector<node> intopost(vector<node>v){
+	vector<node> ans;
+	forl(i,0,v.si){
+		if(v[i].b){
+			char c=v[i].opr;
+			if(c=='('){
+				st.push(v[i]);
+			}
+			else if(c==')'){
+				while(st.top().opr!='('){
+					ans.pb(st.top());
+					st.pop();
+				}
+				st.pop();
+			}
+			else{
+				while(st.top().opr!='('&&priority(c)<=priority(st.top().opr)){
+					if(c=='^'&&st.top().opr=='^') break;
+					ans.pb(st.top());
+					st.pop();
+				}
+				//if(st.top().opr=='(') st.pop();
+				st.push(v[i]);
+			}
+		}
+		else{
+			ans.pb(v[i]);
+		}
+	}
+	return ans;
+	
+}
+int eval(etree * root){
+	if(root==NULL) return 0;
+	if(root->left==NULL&&root->right==NULL){
+		return root->data.x;
+	}
+	int x=eval(root->left);
+	int y=eval(root->right);
+	if(root->data.opr=='+') return x+y;
+	else if(root->data.opr=='-') return x-y;
+	else if(root->data.opr=='*') return x*y;
+	else if(root->data.opr=='/') return x/y;
+	else return pow(x,y);
+}
+
+int priority(char p) 
+{ 
+    if(p == '^') 
+    return 2; 
+    else if(c == '*' || c == '/') 
+    return 1; 
+    else if(c == '+' || c == '-') 
+    return 0; 
+    else
+    return -1; 
+} 
