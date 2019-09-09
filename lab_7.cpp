@@ -76,7 +76,7 @@ void trie::preorder(node *current)
 
 		for(int i=9;i>=0;i--)
 		{
-			preorder(current->children[i]);
+			if(current->children[i]!=NULL)	preorder(current->children[i]);
 		}
 	}
 }
@@ -101,6 +101,7 @@ int main()
 		}
 
 		tree.preorder(tree.root);
+		cout<<"\n";
 
 		testcases--;
 	}
