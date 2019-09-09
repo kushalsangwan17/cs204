@@ -7,6 +7,7 @@ struct node
 	string s=""; 
 	node();
 	bool leaf=false;
+	int number=0;
 };
 
 node::node()
@@ -47,9 +48,14 @@ void trie::insert(string s)
 	{
 		int q=s[i]-48;
 		if(parent->children[q]==NULL) parent->children[q]=new node;
-		parent->children[q]->s=s.substr(0,i+1);
+		
 		parent=parent->children[q];
-		if(i==s.length()-1) parent->leaf=true;
+		if(i==s.length()-1)
+		{
+			 parent->leaf=true;
+			 parent->s=s.substr(0,i+1);
+			 parent->number++;
+		}
 	}
 }
 
@@ -58,7 +64,16 @@ void trie::preorder(node *current)
 	
 	if(current!=NULL)
 	{
-		if(leaf(current)==true) cout<<current->s;
+		if(leaf(current)==true) 
+			{
+				int p=current->number;
+				while(p>0)
+				{
+					cout<<current->s;
+					p--;
+				}
+			}
+
 		for(int i=9;i>=0;i--)
 		{
 			preorder(current->children[i]);
