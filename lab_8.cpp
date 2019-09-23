@@ -1,91 +1,98 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
 
-
-long double median(long double* a,long long int k);
-long double radius(long double x,long double y);
-long double* insertion_sort(long double* p,long long int k);
-long long int ceil(long long int k);
-long long int floor(long long int k);
+typedef long long int ll;
+ll kthSmallest(ll arr[], ll l, ll r, ll k) ;
+ll partition(ll arr[], ll l, ll r, ll x) ;
+ll findMedian(ll arr[], ll n) ;
+void swap(ll *a, ll *b);
 
 int main()
 {
-	long long int num;
-	cin>>num;
-	while(num>0)
-	{
-		long long int k;
-		cin>>k;
-		long double a[k];
-		for(int i=0;i<k;i++)
-		{
-			long double x;
-			long double y;
-			cin>>x;
-			cin>>y;
-			a[i]=radius(x,y);
-		}
-
-		
-
-		long double* c=insertion_sort(a,k);
-		
-			cout<<c[ceil(k)-1]<<"\n"; 
-		
-		num--;
-	}
+  ll t;
+  cin>>t;
+  for(ll i=0;i<t;++i)
+  {
+    ll k;
+    cin>>k;
+    ll arr[k];
+    for(ll j=0;j<k;++j)
+    {
+      ll a,b;
+      cin>>a>>b;
+     ll dis = (a*a+b*b);
+      arr[j]=dis;
+    }
+    ll ans =0;
+    if(k%2==0)
+   ans = kthSmallest(arr,0,k-1,k/2);
+ else 
+  ans = kthSmallest(arr,0,k-1,k/2+1);
+    cout<<sqrt(ans)<<endl;
+  }
 }
 
-long double radius(long double x,long double y)
-{
-	long double a=x*x;
-	long double b=y*y;
-	long double c=a+b;
-	return pow(c,0.5);
-}
-
-long long int ceil(long long int k)
-{
-	if(k%2==0)
-		return k/2;
-	else
-		return (k+1)/2;
-}
-
-long long int floor(long long int k)
-{
-	if(k%2==0)
-		return k/2;
-	else
-		return (k-1)/2;
-}
-
-
-long double* insertion_sort(long double* a,long long int k)
-
-{
-	
-	for(long long int i=1;i<k;i++)
-	{	
-		long long int j=i-1;
-		long double key=a[i];
-		while((a[j]>key)&&(j>=0))
-		{
-			a[j+1]=a[j];
-			j--;
-		}
-		a[j+1]=key;
-	}
-
-	return a;
-}
-
-long double median(long double* a,long long int k)
-{
-	
-		long double* c=insertion_sort(a,k);
-		return c[ceil(k)];
-	
-
-	
-}
+ll findMedian(ll arr[], ll n) 
+{ 
+    sort(arr, arr+n);  // Sort the array 
+    return arr[n/2];   // Return middle element 
+} 
+void swap(ll *a, ll *b) 
+{ 
+    ll temp = *a; 
+    *a = *b; 
+    *b = temp; 
+} 
+ll partition(ll arr[], ll l, ll r, ll x) 
+{ 
+    ll i; 
+    for (i=l; i<r; i++) 
+        if (arr[i] == x) 
+           break; 
+    swap(&arr[i], &arr[r]); 
+    i = l; 
+    for (ll j = l; j <= r - 1; j++) 
+    { 
+        if (arr[j] <= x) 
+        { 
+            swap(&arr[i], &arr[j]); 
+            i++; 
+        } 
+    } 
+    swap(&arr[i], &arr[r]); 
+    return i; 
+} 
+ll kthSmallest(ll arr[], ll l, ll r, ll k) 
+{ 
+    // If k is smaller than number of elements in array 
+    if (k > 0 && k <= r - l + 1) 
+    { 
+        ll n = r-l+1; // Number of elements in arr[l..r] 
+        ll i, median[(n+4)/5]; // There will be floor((n+4)/5) groups; 
+        for (i=0; i<n/5; i++) 
+            median[i] = findMedian(arr+l+i*5, 5); 
+        if (i*5 < n) //For last group with less than 5 elements 
+        { 
+            median[i] = findMedian(arr+l+i*5, n%5);  
+            i++; 
+        }     
+        ll medOfMed = (i == 1)? median[i-1]: 
+                                 kthSmallest(median, 0, i-1, i/2); 
+  
+        // Partition the array around a random element and 
+        // get position of pivot element in sorted array 
+        ll pos = partition(arr, l, r, medOfMed); 
+  
+        // If position is same as k 
+        if (pos-l == k-1) 
+            return arr[pos]; 
+        if (pos-l > k-1)  // If position is more, recur for left 
+            return kthSmallest(arr, l, pos-1, k); 
+  
+        // Else recur for right subarray 
+        return kthSmallest(arr, pos+1, r, k-pos+l-1); 
+    } 
+  
+    // If k is more than number of elements in array 
+    return INT_MAX; 
+} 
