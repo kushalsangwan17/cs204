@@ -160,7 +160,7 @@ void convexHull(Point points[], int n)
          ap[i].x < ap[mi].x)) 
         xmin = ap[i].x, mi = i; 
    } 
-  
+   cout<<e<<"\n";
    for(int t=0;t<e;t++)
    { 
       int index ;
